@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rubbellos Einladung</title>
+
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #111;
+            /* Verhindert das "Gummiband"-Scrollen auf iOS */
+            overflow: hidden; 
+            font-family: sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 90vw;
+            max-width: 400px;
+            /* Verhindert das Markieren von Text/Bildern beim Rubbeln */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        img {
+            width: 100%;
+            display: block;
+            border-radius: 15px;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 15px;
+            cursor: crosshair;
+            /* WICHTIG: Verhindert das Scrollen der Seite beim Berühren des Canvas */
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="C747974E-CAE2-4BBF-A44A-02351C03A003.png" id="image" alt="Einladung">
+    <canvas id="scratch"></canvas>
+</div>
+
+<script>
+    const canvas = document.getElementById("scratch");
+    const ctx = canvas.getContext("2d");
+    const img = document.getElementById("image");
+
+    function setupCanvas() {
+        // Sicherstellen, dass die Maße exakt dem Bild entsprechen
+        canvas.width = img.clientWidth;
+        canvas.height = img.clientHeight;
+
+        // Graue Fläche
+        ctx.fillStyle = "#888";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Optional: Text auf die graue Fläche schreiben
+        ctx.fillStyle = "#555";
+        ctx.font = "20px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("Rubbel mich frei!", canvas.width / 2, canvas.height / 2);
+    }
+
+    // Falls das Bild schon geladen ist (Cache) oder noch lädt
+    if (img.complete) {
+        setupCanvas();
+    } else {
+        img.onload = setupCanvas;
+    }
+
+    window.onresize = setupCanvas;
+
+    function scratch(x, y) {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.arc(x, y, 25, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Touch-Events (Handy)
+    canvas.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // Verhindert Scrollen
+    }, { passive: false });
+
+    canvas.addEventListener("touchmove", (e) => {
+        e.preventDefault(); // Verhindert Scrollen
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        scratch(x, y);
+    }, { passive: false });
+
+    // Maus-Events (PC)
+    let isDrawing = false;
+    canvas.addEventListener("mousedown", () => isDrawing = true);
+    window.addEventListener("mouseup", () => isDrawing = false);
+    canvas.addEventListener("mousemove", (e) => {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        scratch(e.clientX - rect.left, e.clientY - rect.top);
+    });
+</script>
+
+</body>
+</html>
