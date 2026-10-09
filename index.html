@@ -104,7 +104,7 @@
             width: 100%;
             max-height: 85vh;
             object-fit: contain;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.4s ease-in-out;
         }
 
         /* Schwebende Herzen-Effekt */
@@ -132,58 +132,75 @@
         <p>Tippe auf das Herz...</p>
     </div>
 
-    <!-- Das eigentliche Bild -->
+    <!-- Das eigentliche Bild (Slideshow & danach das Frage-Bild) -->
     <div id="content">
         <div class="img-container">
-            <img id="myImage" src="IMG_0109.jpeg" alt="Will you be my girlfriend?">
+            <img id="myImage" src="IMG_0109.jpeg" alt="Für dich">
         </div>
     </div>
 
     <script>
-        const slideshowImages = [
-            "IMG_0109.jpeg",
-            "IMG_0067.jpeg",
-            "IMG_0073.jpeg",
-            "IMG_7026.jpeg",
-            "IMG_0017.jpeg",
-            "IMG_0057.jpeg",
-            "IMG_0208.jpeg",
-            "IMG_7025.jpeg",
-            "IMG_7030.jpeg",
-            "IMG_7031.png"
+        // Basissortierung der 10 Bilder ohne fixe Endung
+        const baseNames = [
+            "IMG_0109",
+            "IMG_0067",
+            "IMG_0073",
+            "IMG_7026",
+            "IMG_0017",
+            "IMG_0057",
+            "IMG_0208",
+            "IMG_7025",
+            "IMG_7030",
+            "IMG_7031"
         ];
 
         const finalImage = "415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg";
         let currentIndex = 0;
 
+        // Versuche verschiedene Bild-Endungen (.jpeg, .JPG, .png, .jpg), falls GitHub zickt
+        function setImageWithFallback(imgElement, baseName) {
+            const extensions = ['.jpeg', '.JPG', '.png', '.jpg', '.JPEG', '.PNG'];
+            let extIndex = 0;
+
+            function tryNext() {
+                if (extIndex < extensions.length) {
+                    imgElement.src = baseName + extensions[extIndex];
+                    extIndex++;
+                }
+            }
+
+            imgElement.onerror = tryNext;
+            tryNext();
+        }
+
         function revealSecret() {
-            // Intro ausblenden
             const intro = document.getElementById('intro');
             intro.style.opacity = '0';
-            setTimeout(() => intro.style.display = 'none', 1000);
+            setTimeout(() => { intro.style.display = 'none'; }, 1000);
 
-            // Bild sanft einblenden
             setTimeout(() => {
                 document.getElementById('content').classList.add('show');
-                // Herzchen-Regen starten
                 setInterval(createHeart, 300);
 
-                // Slideshow starten (alle 3 Sekunden nächstes Bild)
+                const img = document.getElementById('myImage');
+                setImageWithFallback(img, baseNames[0]);
+
                 const slideInterval = setInterval(() => {
                     currentIndex++;
-                    const img = document.getElementById('myImage');
-                    
                     img.style.opacity = '0';
 
                     setTimeout(() => {
-                        if (currentIndex < slideshowImages.length) {
-                            img.src = slideshowImages[currentIndex];
+                        if (currentIndex < baseNames.length) {
+                            setImageWithFallback(img, baseNames[currentIndex]);
                         } else {
+                            // Slideshow zu Ende -> Frage-Bild aus deinem ursprünglichen Code anzeigen
+                            img.onerror = null;
                             img.src = finalImage;
                             clearInterval(slideInterval);
                         }
                         img.style.opacity = '1';
-                    }, 500);
+                    }, 400);
+
                 }, 3000);
             }, 400);
         }
@@ -191,19 +208,15 @@
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('falling-heart');
-            // Zufällige Symbole wählen
             const icons = ['❤️', '💖', '💝', '💕'];
             heart.innerText = icons[Math.floor(Math.random() * icons.length)];
             
-            // Zufällige Positionen und Größen berechnen
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
             heart.style.setProperty('--randomX', (Math.random() * 100 - 50) + 'px');
             heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
             
             document.body.appendChild(heart);
-            
-            // Nach der Animation löschen
             setTimeout(() => { heart.remove(); }, 6000);
         }
     </script>
