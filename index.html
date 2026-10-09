@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Für dich...</title>
+    <title>For you...</title>
     <style>
         * {
             box-sizing: border-box;
@@ -140,16 +140,16 @@
 </head>
 <body>
 
-    <!-- Startseite: Zum Öffnen tippen -->
+    <!-- Startseite: Englisch für "Tippe/Klicke auf das Herz" -->
     <div id="intro" onclick="revealSecret()">
         <div class="heart"></div>
-        <p>Press the hearth...</p>
+        <p>Click the heart...</p>
     </div>
 
     <!-- Das eigentliche Bild -->
     <div id="content">
         <div class="img-container" id="card">
-            <img id="myImage" class="fast-cut" src="IMG_0109.jpeg" alt="Für dich">
+            <img id="myImage" class="fast-cut" src="IMG_0109.jpeg" alt="For you">
         </div>
     </div>
 
@@ -199,7 +199,7 @@
                 
                 setImageWithFallback(img, baseNames[0]);
 
-                // Schneller Wechsel alle 300 Millisekunden (Schnitte wie im Flug)
+                // Schneller Wechsel alle 300 Millisekunden
                 const slideInterval = setInterval(() => {
                     currentIndex++;
 
@@ -211,10 +211,10 @@
                         img.onerror = null;
                         img.src = finalImage;
                         
-                        // Karten-Pop-Up Animation triggern
+                        // Karten-Pop-Up Animation
                         card.classList.add('pop-effect');
                     }
-                }, 300); // 300ms = blitzschnelle Cuts
+                }, 300);
             }, 200);
         }
 
