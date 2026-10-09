@@ -21,7 +21,7 @@
             position: relative;
         }
 
-        /* Intro-Bildschirm */
+        /* Intro-Bildschirm mit Herz */
         #intro {
             position: absolute;
             z-index: 10;
@@ -74,7 +74,7 @@
             100% { opacity: 1; }
         }
 
-        /* Hauptinhalt mit Slideshow */
+        /* Hauptinhalt mit der Slideshow */
         #content {
             opacity: 0;
             transform: scale(0.9);
@@ -95,7 +95,7 @@
 
         .img-container {
             max-width: 100%;
-            max-height: 75vh;
+            max-height: 80vh;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             overflow: hidden;
@@ -108,19 +108,9 @@
         .img-container img {
             display: block;
             width: 100%;
-            max-height: 70vh;
+            max-height: 75vh;
             object-fit: contain;
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        /* Titel/Frage unter den Bildern */
-        .question {
-            margin-top: 20px;
-            font-size: 1.8rem;
-            color: #ff4b6e;
-            font-weight: bold;
-            text-align: center;
-            text-shadow: 1px 1px 10px rgba(255, 75, 110, 0.2);
+            transition: opacity 0.5s ease-in-out;
         }
 
         /* Schwebende Herzen-Effekt */
@@ -148,28 +138,30 @@
         <p>Tippe auf das Herz...</p>
     </div>
 
-    <!-- Slideshow mit euren Bildern -->
+    <!-- Bildbereich für Slideshow & Finalbild -->
     <div id="content">
         <div class="img-container">
-            <img id="slideshow" src="bild1.jpg" alt="Unsere Erinnerungen">
+            <img id="main-image" src="IMG_0109.jpeg" alt="Erinnerungen">
         </div>
-        <h1 class="question">Willst du meine Freundin sein? ❤️</h1>
     </div>
 
     <script>
-        // Liste eurer Bilder
-        const images = [
-            "bild1.jpg",
-            "bild2.jpg",
-            "bild3.jpg",
-            "bild4.jpg",
-            "bild5.jpg",
-            "bild6.jpg",
-            "bild7.jpg",
-            "bild8.jpg",
-            "bild9.jpg",
-            "bild10.jpg"
+        // Deine 10 hochgeladenen Bilder
+        const slideshowImages = [
+            "IMG_0109.jpeg",
+            "IMG_0067.jpeg",
+            "IMG_0073.jpeg",
+            "IMG_7026.jpeg",
+            "IMG_0017.jpeg",
+            "IMG_0057.jpeg",
+            "IMG_0208.jpeg",
+            "IMG_7025.jpeg",
+            "IMG_7030.jpeg",
+            "IMG_7031.png"
         ];
+
+        // Das finale Frage-Bild
+        const finalImage = "415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg";
 
         let currentIndex = 0;
 
@@ -179,24 +171,33 @@
             intro.style.opacity = '0';
             setTimeout(() => intro.style.display = 'none', 1000);
 
-            // Hauptseite einblenden & Animationen starten
+            // Bildbereich einblenden
             setTimeout(() => {
                 document.getElementById('content').classList.add('show');
+                // Herzchen-Regen starten
                 setInterval(createHeart, 300);
                 
-                // Alle 3,5 Sekunden das Bild wechseln
-                setInterval(changeImage, 3500);
-            }, 400);
-        }
+                // Alle 3 Sekunden nächstes Bild zeigen
+                const slideInterval = setInterval(() => {
+                    currentIndex++;
+                    const img = document.getElementById('main-image');
+                    
+                    img.style.opacity = '0'; // Kurzer Überblend-Effekt
+                    
+                    setTimeout(() => {
+                        if (currentIndex < slideshowImages.length) {
+                            // Slideshow läuft durch die 10 Bilder
+                            img.src = slideshowImages[currentIndex];
+                        } else {
+                            // Am Ende das finale Frage-Bild anzeigen!
+                            img.src = finalImage;
+                            img.alt = "Will you be my girlfriend?";
+                            clearInterval(slideInterval); // Slideshow stoppen
+                        }
+                        img.style.opacity = '1';
+                    }, 500);
 
-        function changeImage() {
-            const imgElement = document.getElementById('slideshow');
-            imgElement.style.opacity = '0'; // Überblend-Effekt
-            
-            setTimeout(() => {
-                currentIndex = (currentIndex + 1) % images.length;
-                imgElement.src = images[currentIndex];
-                imgElement.style.opacity = '1';
+                }, 3000); // 3000ms = 3 Sekunden pro Bild
             }, 400);
         }
 
@@ -212,6 +213,7 @@
             heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
             
             document.body.appendChild(heart);
+            
             setTimeout(() => { heart.remove(); }, 6000);
         }
     </script>
