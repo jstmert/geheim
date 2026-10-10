@@ -140,7 +140,7 @@
 </head>
 <body>
 
-    <!-- Startseite: Englisch für "Tippe/Klicke auf das Herz" -->
+    <!-- Startseite -->
     <div id="intro" onclick="revealSecret()">
         <div class="heart"></div>
         <p>Click the heart...</p>
@@ -168,7 +168,28 @@
         ];
 
         const finalImage = "415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg";
+        const preloadedImages = [];
         let currentIndex = 0;
+
+        // BILDER VORLADEN (Preloading): Lädt alle Bilder sofort im Hintergrund, damit es nicht ruckelt!
+        function preloadAllImages() {
+            const extensions = ['.jpeg', '.JPG', '.png', '.jpg', '.JPEG', '.PNG'];
+
+            baseNames.forEach((base) => {
+                extensions.forEach((ext) => {
+                    const img = new Image();
+                    img.src = base + ext;
+                    preloadedImages.push(img);
+                });
+            });
+
+            const finalImg = new Image();
+            finalImg.src = finalImage;
+            preloadedImages.push(finalImg);
+        }
+
+        // Direkt beim Aufrufen der Webseite mit dem Vorladen beginnen
+        preloadAllImages();
 
         function setImageWithFallback(imgElement, baseName) {
             const extensions = ['.jpeg', '.JPG', '.png', '.jpg', '.JPEG', '.PNG'];
@@ -199,7 +220,7 @@
                 
                 setImageWithFallback(img, baseNames[0]);
 
-                // Schneller Wechsel alle 300 Millisekunden
+                // Schneller Wechsel alle 280 Millisekunden ohne Ruckeln
                 const slideInterval = setInterval(() => {
                     currentIndex++;
 
@@ -211,10 +232,9 @@
                         img.onerror = null;
                         img.src = finalImage;
                         
-                        // Karten-Pop-Up Animation
                         card.classList.add('pop-effect');
                     }
-                }, 300);
+                }, 280);
             }, 200);
         }
 
