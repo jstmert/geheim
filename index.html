@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,211 +22,216 @@
             position: relative;
         }
 
-        /* Intro-Bildschirm */
-        #intro {
-            position: absolute;
-            z-index: 10;
-            width: 100%;
-            height: 100%;
-            background-color: #fff5f5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 0.4s ease-out, visibility 0.4s;
-        }
-        .heart {
-            background-color: #ff4b6e;
-            display: inline-block;
-            height: 70px;
-            position: relative;
-            transform: rotate(-45deg);
-            width: 70px;
-            animation: pulse 1.2s infinite;
-            box-shadow: 0 10px 30px rgba(255, 75, 110, 0.3);
-        }
-        .heart:before, .heart:after {
-            content: "";
-            background-color: #ff4b6e;
-            border-radius: 50%;
-            height: 70px;
-            position: absolute;
-            width: 70px;
-        }
-        .heart:before { top: -35px; left: 0; }
-        .heart:after { left: 35px; top: 0; }
-        
-        #intro p {
-            margin-top: 60px;
-            color: #ff4b6e;
-            font-size: 1.2rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            animation: fadeText 1.5s infinite alternate;
-        }
-        @keyframes pulse {
-            0% { transform: rotate(-45deg) scale(1); }
-            50% { transform: rotate(-45deg) scale(1.15); }
-            100% { transform: rotate(-45deg) scale(1); }
-        }
-        @keyframes fadeText {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
+```
+    /* Intro-Bildschirm */
+    #intro {
+        position: absolute;
+        z-index: 10;
+        width: 100%;
+        height: 100%;
+        background-color: #fff5f5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: opacity 0.4s ease-out, visibility 0.4s;
+    }
+    .heart {
+        background-color: #ff4b6e;
+        display: inline-block;
+        height: 70px;
+        position: relative;
+        transform: rotate(-45deg);
+        width: 70px;
+        animation: pulse 1.2s infinite;
+        box-shadow: 0 10px 30px rgba(255, 75, 110, 0.3);
+    }
+    .heart:before, .heart:after {
+        content: "";
+        background-color: #ff4b6e;
+        border-radius: 50%;
+        height: 70px;
+        position: absolute;
+        width: 70px;
+    }
+    .heart:before { top: -35px; left: 0; }
+    .heart:after { left: 35px; top: 0; }
 
-        /* Hauptinhalt mit dem Bild */
-        #content {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.4s ease-out;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            z-index: 2;
-        }
-        #content.show {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .img-container {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            overflow: hidden;
-            border: 8px solid white;
-            background: white;
-        }
-        .img-container img {
-            display: block;
-            width: 100%;
-            max-height: 85vh;
-            object-fit: contain;
-        }
+    #intro p {
+        margin-top: 60px;
+        color: #ff4b6e;
+        font-size: 1.2rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        animation: fadeText 1.5s infinite alternate;
+    }
+    @keyframes pulse {
+        0% { transform: rotate(-45deg) scale(1); }
+        50% { transform: rotate(-45deg) scale(1.15); }
+        100% { transform: rotate(-45deg) scale(1); }
+    }
+    @keyframes fadeText {
+        0% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
 
-        .pop-effect {
-            animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
+    /* Hauptinhalt mit dem Bild */
+    #content {
+        opacity: 0;
+        transform: scale(0.9);
+        transition: all 0.4s ease-out;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        z-index: 2;
+    }
+    #content.show {
+        opacity: 1;
+        transform: scale(1);
+    }
+    /* Fester Rahmen: keine Layout-Sprünge beim Bildwechsel */
+    .img-container {
+        width: min(92vw, 520px);
+        height: 80vh;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        overflow: hidden;
+        border: 8px solid white;
+        background: white;
+    }
+    .img-container img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
 
-        @keyframes popUp {
-            0% { transform: scale(0.6); opacity: 0; }
-            70% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+    .pop-effect {
+        animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
 
-        /* Versteckter Speicherbereich zum flüssigen Vorladen */
-        #preload {
-            display: none;
-        }
+    @keyframes popUp {
+        0% { transform: scale(0.6); opacity: 0; }
+        70% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+    }
 
-        /* Schwebende Herzen */
-        .falling-heart {
-            position: absolute;
-            bottom: -20px;
-            color: #ff4b6e;
-            font-size: 20px;
-            opacity: 0.7;
-            pointer-events: none;
-            z-index: 1;
-            animation: floatUp 4s linear infinite;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateY(-105vh) translateX(var(--randomX)) rotate(360deg); opacity: 0; }
-        }
-    </style>
+    /* Schwebende Herzen */
+    .falling-heart {
+        position: absolute;
+        bottom: -20px;
+        color: #ff4b6e;
+        font-size: 20px;
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: 1;
+        will-change: transform, opacity;
+        animation: floatUp 4s linear infinite;
+    }
+    @keyframes floatUp {
+        0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+        100% { transform: translateY(-105vh) translateX(var(--randomX)) rotate(360deg); opacity: 0; }
+    }
+</style>
+```
+
 </head>
 <body>
 
-    <!-- Startseite -->
-    <div id="intro" onclick="revealSecret()">
-        <div class="heart"></div>
-        <p>Click the heart...</p>
+```
+<!-- Startseite -->
+<div id="intro" onclick="revealSecret()">
+    <div class="heart"></div>
+    <p>Click the heart...</p>
+</div>
+
+<!-- Hauptbild -->
+<div id="content">
+    <div class="img-container" id="card">
+        <img id="myImage" src="IMG_0109.jpeg" alt="">
     </div>
+</div>
 
-    <!-- Hauptbild ohne jeglichen Alt-Text/Fehlertext -->
-    <div id="content">
-        <div class="img-container" id="card">
-            <img id="myImage" src="IMG_0109.jpeg" alt="">
-        </div>
-    </div>
+<script>
+    const images = [
+        "IMG_0109.jpeg",
+        "IMG_0067.jpeg",
+        "IMG_0073.jpeg",
+        "IMG_7026.jpeg",
+        "IMG_0017.jpeg",
+        "IMG_0057.jpeg",
+        "IMG_0208.jpeg",
+        "IMG_7025.jpeg",
+        "IMG_7030.jpeg",
+        "IMG_7031.png"
+    ];
+    const finalImage = "415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg";
 
-    <!-- Alle Bilder vorladen -->
-    <div id="preload">
-        <img src="IMG_0109.jpeg">
-        <img src="IMG_0067.jpeg">
-        <img src="IMG_0073.jpeg">
-        <img src="IMG_7026.jpeg">
-        <img src="IMG_0017.jpeg">
-        <img src="IMG_0057.jpeg">
-        <img src="IMG_0208.jpeg">
-        <img src="IMG_7025.jpeg">
-        <img src="IMG_7030.jpeg">
-        <img src="IMG_7031.png">
-        <img src="415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg">
-    </div>
+    // Alle Bilder sofort laden UND dekodieren (Referenzen behalten,
+    // damit der Browser sie nicht wieder aus dem Speicher wirft)
+    const loaded = [];
+    const preloadPromise = Promise.all(
+        [...images, finalImage].map(src => {
+            const im = new Image();
+            im.src = src;
+            loaded.push(im);
+            return im.decode().catch(() => {});
+        })
+    );
 
-    <script>
-        const images = [
-            "IMG_0109.jpeg",
-            "IMG_0067.jpeg",
-            "IMG_0073.jpeg",
-            "IMG_7026.jpeg",
-            "IMG_0017.jpeg",
-            "IMG_0057.jpeg",
-            "IMG_0208.jpeg",
-            "IMG_7025.jpeg",
-            "IMG_7030.jpeg",
-            "IMG_7031.png"
-        ];
+    let started = false;
 
-        const finalImage = "415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg";
+    async function revealSecret() {
+        if (started) return;
+        started = true;
+
+        const intro = document.getElementById('intro');
+        intro.style.opacity = '0';
+        setTimeout(() => { intro.style.display = 'none'; }, 400);
+
+        // Wartet, bis wirklich alle Bilder bereit sind
+        await preloadPromise;
+
+        const img = document.getElementById('myImage');
+        const card = document.getElementById('card');
+
+        img.src = images[0];
+        document.getElementById('content').classList.add('show');
+        setInterval(createHeart, 400);
+
         let currentIndex = 0;
+        const slideInterval = setInterval(() => {
+            currentIndex++;
+            if (currentIndex < images.length) {
+                img.src = images[currentIndex];
+            } else {
+                clearInterval(slideInterval);
+                img.src = finalImage;
+                card.classList.add('pop-effect');
+            }
+        }, 250);
+    }
 
-        function revealSecret() {
-            const intro = document.getElementById('intro');
-            intro.style.opacity = '0';
-            setTimeout(() => { intro.style.display = 'none'; }, 400);
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('falling-heart');
+        const icons = ['❤️', '💖', '💝', '💕'];
+        heart.innerText = icons[Math.floor(Math.random() * icons.length)];
 
-            setTimeout(() => {
-                document.getElementById('content').classList.add('show');
-                setInterval(createHeart, 250);
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        heart.style.setProperty('--randomX', (Math.random() * 100 - 50) + 'px');
+        heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
 
-                const img = document.getElementById('myImage');
-                const card = document.getElementById('card');
+        document.body.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 6000);
+    }
+</script>
+```
 
-                const slideInterval = setInterval(() => {
-                    currentIndex++;
-
-                    if (currentIndex < images.length) {
-                        img.src = images[currentIndex];
-                    } else {
-                        clearInterval(slideInterval);
-                        img.src = finalImage;
-                        card.classList.add('pop-effect');
-                    }
-                }, 250);
-            }, 100);
-        }
-
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('falling-heart');
-            const icons = ['❤️', '💖', '💝', '💕'];
-            heart.innerText = icons[Math.floor(Math.random() * icons.length)];
-            
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            heart.style.setProperty('--randomX', (Math.random() * 100 - 50) + 'px');
-            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-            
-            document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 6000);
-        }
-    </script>
 </body>
 </html>
