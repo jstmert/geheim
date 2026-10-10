@@ -20,7 +20,8 @@
             overflow: hidden;
             position: relative;
         }
-        /* Intro-Bildschirm mit Herz */
+
+        /* Intro-Bildschirm */
         #intro {
             position: absolute;
             z-index: 10;
@@ -32,7 +33,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: opacity 0.5s ease-out, visibility 0.5s;
+            transition: opacity 0.4s ease-out, visibility 0.4s;
         }
         .heart {
             background-color: #ff4b6e;
@@ -77,7 +78,7 @@
         #content {
             opacity: 0;
             transform: scale(0.9);
-            transition: all 0.5s ease-out;
+            transition: all 0.4s ease-out;
             width: 100%;
             height: 100%;
             display: flex;
@@ -98,7 +99,6 @@
             overflow: hidden;
             border: 8px solid white;
             background: white;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .img-container img {
             display: block;
@@ -107,21 +107,22 @@
             object-fit: contain;
         }
 
-        /* Effekte für harte Cuts & Pop-Up am Ende */
-        .fast-cut {
-            transition: none !important;
-        }
         .pop-effect {
-            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes popUp {
-            0% { transform: scale(0.5); opacity: 0; }
-            70% { transform: scale(1.08); opacity: 1; }
+            0% { transform: scale(0.6); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Schwebende Herzen-Effekt */
+        /* Versteckter Speicherbereich zum flüssigen Vorladen */
+        #preload {
+            display: none;
+        }
+
+        /* Schwebende Herzen */
         .falling-heart {
             position: absolute;
             bottom: -20px;
@@ -146,70 +147,50 @@
         <p>Click the heart...</p>
     </div>
 
-    <!-- Das eigentliche Bild -->
+    <!-- Hauptbild -->
     <div id="content">
         <div class="img-container" id="card">
-            <img id="myImage" class="fast-cut" src="IMG_0109.jpeg" alt="For you">
+            <img id="myImage" src="IMG_0109.jpeg" alt="For you">
         </div>
     </div>
 
+    <!-- Alle Bilder werden hier direkt beim Aufrufen der Seite im Hintergrund geladen -->
+    <div id="preload">
+        <img src="IMG_0109.jpeg">
+        <img src="IMG_0067.jpeg">
+        <img src="IMG_0073.jpeg">
+        <img src="IMG_7026.jpeg">
+        <img src="IMG_0017.jpeg">
+        <img src="IMG_0057.jpeg">
+        <img src="IMG_0208.jpeg">
+        <img src="IMG_7025.jpeg">
+        <img src="IMG_7030.jpeg">
+        <img src="IMG_7031.png">
+        <img src="415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg">
+    </div>
+
     <script>
-        const baseNames = [
-            "IMG_0109",
-            "IMG_0067",
-            "IMG_0073",
-            "IMG_7026",
-            "IMG_0017",
-            "IMG_0057",
-            "IMG_0208",
-            "IMG_7025",
-            "IMG_7030",
-            "IMG_7031"
+        // Exakte Dateinamen deiner hochgeladenen Bilder
+        const images = [
+            "IMG_0109.jpeg",
+            "IMG_0067.jpeg",
+            "IMG_0073.jpeg",
+            "IMG_7026.jpeg",
+            "IMG_0017.jpeg",
+            "IMG_0057.jpeg",
+            "IMG_0208.jpeg",
+            "IMG_7025.jpeg",
+            "IMG_7030.jpeg",
+            "IMG_7031.png"
         ];
 
         const finalImage = "415B1616-B5CE-4FCA-A18B-B9795F993C11.jpeg";
-        const preloadedImages = [];
         let currentIndex = 0;
-
-        // BILDER VORLADEN (Preloading): Lädt alle Bilder sofort im Hintergrund, damit es nicht ruckelt!
-        function preloadAllImages() {
-            const extensions = ['.jpeg', '.JPG', '.png', '.jpg', '.JPEG', '.PNG'];
-
-            baseNames.forEach((base) => {
-                extensions.forEach((ext) => {
-                    const img = new Image();
-                    img.src = base + ext;
-                    preloadedImages.push(img);
-                });
-            });
-
-            const finalImg = new Image();
-            finalImg.src = finalImage;
-            preloadedImages.push(finalImg);
-        }
-
-        // Direkt beim Aufrufen der Webseite mit dem Vorladen beginnen
-        preloadAllImages();
-
-        function setImageWithFallback(imgElement, baseName) {
-            const extensions = ['.jpeg', '.JPG', '.png', '.jpg', '.JPEG', '.PNG'];
-            let extIndex = 0;
-
-            function tryNext() {
-                if (extIndex < extensions.length) {
-                    imgElement.src = baseName + extensions[extIndex];
-                    extIndex++;
-                }
-            }
-
-            imgElement.onerror = tryNext;
-            tryNext();
-        }
 
         function revealSecret() {
             const intro = document.getElementById('intro');
             intro.style.opacity = '0';
-            setTimeout(() => { intro.style.display = 'none'; }, 500);
+            setTimeout(() => { intro.style.display = 'none'; }, 400);
 
             setTimeout(() => {
                 document.getElementById('content').classList.add('show');
@@ -217,25 +198,21 @@
 
                 const img = document.getElementById('myImage');
                 const card = document.getElementById('card');
-                
-                setImageWithFallback(img, baseNames[0]);
 
-                // Schneller Wechsel alle 280 Millisekunden ohne Ruckeln
+                // Blitzschneller Wechsel ohne Verzögerung (250 ms)
                 const slideInterval = setInterval(() => {
                     currentIndex++;
 
-                    if (currentIndex < baseNames.length) {
-                        setImageWithFallback(img, baseNames[currentIndex]);
+                    if (currentIndex < images.length) {
+                        img.src = images[currentIndex];
                     } else {
-                        // Ende der Diashow: Großes Pop-Up für das finale Bild!
+                        // Diashow beendet -> Aufploppen des Frage-Bildes
                         clearInterval(slideInterval);
-                        img.onerror = null;
                         img.src = finalImage;
-                        
                         card.classList.add('pop-effect');
                     }
-                }, 280);
-            }, 200);
+                }, 250);
+            }, 100);
         }
 
         function createHeart() {
