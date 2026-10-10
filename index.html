@@ -147,14 +147,14 @@
         <p>Click the heart...</p>
     </div>
 
-    <!-- Hauptbild -->
+    <!-- Hauptbild ohne jeglichen Alt-Text/Fehlertext -->
     <div id="content">
         <div class="img-container" id="card">
-            <img id="myImage" src="IMG_0109.jpeg" alt="For you">
+            <img id="myImage" src="IMG_0109.jpeg" alt="">
         </div>
     </div>
 
-    <!-- Alle Bilder werden hier direkt beim Aufrufen der Seite im Hintergrund geladen -->
+    <!-- Alle Bilder vorladen -->
     <div id="preload">
         <img src="IMG_0109.jpeg">
         <img src="IMG_0067.jpeg">
@@ -170,7 +170,6 @@
     </div>
 
     <script>
-        // Exakte Dateinamen deiner hochgeladenen Bilder
         const images = [
             "IMG_0109.jpeg",
             "IMG_0067.jpeg",
@@ -199,14 +198,12 @@
                 const img = document.getElementById('myImage');
                 const card = document.getElementById('card');
 
-                // Blitzschneller Wechsel ohne Verzögerung (250 ms)
                 const slideInterval = setInterval(() => {
                     currentIndex++;
 
                     if (currentIndex < images.length) {
                         img.src = images[currentIndex];
                     } else {
-                        // Diashow beendet -> Aufploppen des Frage-Bildes
                         clearInterval(slideInterval);
                         img.src = finalImage;
                         card.classList.add('pop-effect');
